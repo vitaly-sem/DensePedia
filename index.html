@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="system">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DensePedia — База знаний Senior-инженера</title>
+<meta name="description" content="DensePedia — сборник статей для подготовки к техническим интервью и расширения кругозора. 41 раздел, 200+ статей.">
+<meta name="color-scheme" content="light dark">
+
+<!-- CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/ -->
+<link rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+
+<!-- marked.js for Markdown → HTML -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<!-- Prism.js for code syntax highlighting -->
+<link rel="stylesheet" id="prism-theme" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css">
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<!-- KaTeX for math formulas -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+<style>
+/* ============================================================
+   DensePedia Viewer — CSS Custom Properties & Theming
+   ============================================================ */
+
+:root {
+  /* Layout */
+  --sidebar-width: 300px;
+  --topbar-height: 48px;
+  --content-max-width: 860px;
+  --transition-speed: 0.2s;
+
+  /* Typography */
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-reading: "Georgia", "Times New Roman", serif;
+  --font-mono: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", "Monaco", monospace;
+  --font-size-ui: 14px;
+  --font-size-reading: 17px;
+  --font-size-h1: 2em;
+  --font-size-h2: 1.5em;
+  --font-size-h3: 1.25em;
+  --font-size-code: 0.9em;
+  --line-height-reading: 1.75;
+  --line-height-ui: 1.4;
+}
+
+/* ---- Light Theme (default) ---- */
+[data-theme="light"],
+[data-theme="system"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --bg-hover: #f0f0f0;
+  --bg-active: #e3f2fd;
+  --bg-sidebar: #f5f6f8;
+  --bg-code: #f4f4f5;
+  --bg-overlay: rgba(0,0,0,0.3);
+
+  --text-primary: #1a1a2e;
+  --text-secondary: #555;
+  --text-tertiary: #888;
+  --text-link: #1565c0;
+  --text-link-hover: #0d47a1;
+
+  --border-color: #e0e0e0;
+  --border-light: #eee;
+
+  --accent: #1565c0;
+  --accent-light: #e3f2fd;
+  --accent-hover: #0d47a1;
+  --accent-text: #ffffff;
+
+  --scrollbar-bg: #f0f0f0;
+  --scrollbar-thumb: #c0c0c0;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+
+  --tag-bg: #e8eaf6;
+  --tag-text: #3949ab;
+  --blockquote-border: #1565c0;
+  --blockquote-bg: #f8f9ff;
+
+  --table-stripe: #f8f9fa;
+  --table-border: #dee2e6;
+}
+
+/* ---- Dark Theme ---- */
+[data-theme="dark"] {
+  --bg-primary: #1a1b26;
+  --bg-secondary: #1f2030;
+  --bg-tertiary: #2a2b3d;
+  --bg-hover: #2f3045;
+  --bg-active: #1e3a5f;
+  --bg-sidebar: #16171f;
+  --bg-code: #252636;
+  --bg-overlay: rgba(0,0,0,0.5);
+
+  --text-primary: #c9d1d9;
+  --text-secondary: #8b949e;
+  --text-tertiary: #6e7681;
+  --text-link: #58a6ff;
+  --text-link-hover: #79c0ff;
+
+  --border-color: #30363d;
+  --border-light: #21262d;
+
+  --accent: #58a6ff;
+  --accent-light: #1e3a5f;
+  --accent-hover: #79c0ff;
+  --accent-text: #0d1117;
+
+  --scrollbar-bg: #1a1b26;
+  --scrollbar-thumb: #484f58;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+
+  --tag-bg: #1e3a5f;
+  --tag-text: #58a6ff;
+  --blockquote-border: #58a6ff;
+  --blockquote-bg: #1a2332;
+
+  --table-stripe: #1f2030;
+  --table-border: #30363d;
+}
+
+/* ---- Reading Color Modes ---- */
+[data-read-color="white"]       { --reader-bg: var(--bg-primary); --reader-text: var(--text-primary); }
+[data-read-color="cream"]       { --reader-bg: #faf8f0; --reader-text: #3d3629; }
+[data-read-color="sepia"]       { --reader-bg: #f4ecd8; --reader-text: #433422; }
+[data-read-color="soft-green"]  { --reader-bg: #eef4ea; --reader-text: #2d3a28; }
+[data-read-color="gray"]        { --reader-bg: #e8e8e8; --reader-text: #2a2a2a; }
+[data-read-color="dark"]        { --reader-bg: #1a1b26; --reader-text: #c9d1d9; }
+[data-read-color="dark-blue"]   { --reader-bg: #0d1b2a; --reader-text: #c5d5e8; }
+[data-read-color="black"]       { --reader-bg: #0d0d0d; --reader-text: #d4d4d4; }
+
+/* Override reader colors for dark theme (adjust warm tones) */
+[data-theme="dark"][data-read-color="white"]      { --reader-bg: var(--bg-primary); --reader-text: var(--text-primary); }
+[data-theme="dark"][data-read-color="cream"]      { --reader-bg: #2d2a20; --reader-text: #d4cfb8; }
+[data-theme="dark"][data-read-color="sepia"]      { --reader-bg: #2d2416; --reader-text: #d4c5a0; }
+[data-theme="dark"][data-read-color="soft-green"] { --reader-bg: #1e2a1c; --reader-text: #c5d4c0; }
+[data-theme="dark"][data-read-color="gray"]       { --reader-bg: #2a2a2a; --reader-text: #d0d0d0; }
+
+/* ---- Font Size Adjustment ---- */
+:root {
+  --font-size-multiplier: 1;
+}
+[data-font-size="xs"]  { --font-size-multiplier: 0.75; }
+[data-font-size="sm"]  { --font-size-multiplier: 0.875; }
+[data-font-size="md"]  { --font-size-multiplier: 1; }
+[data-font-size="lg"]  { --font-size-multiplier: 1.125; }
+[data-font-size="xl"]  { --font-size-multiplier: 1.25; }
+[data-font-size="xxl"] { --font-size-multiplier: 1.5; }
+
+/* ---- Font Family Modes ---- */
+[data-read-font="serif"]      { --font-reading: "Georgia", "Times New Roman", serif; }
+[data-read-font="sans-serif"] { --font-reading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+[data-read-font="monospace"]  { --font-reading: "Cascadia Code", "Fira Code", "JetBrains Mono", monospace; }
+[data-read-font="book"]       { --font-reading: "Bookerly", "Literata", "Georgia", serif; }
+
+/* ============================================================
+   Reset & Base
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: var(--font-size-ui);
+  line-height: var(--line-height-ui);
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  display: flex;
+  transition: background var(--transition-speed), color var(--transition-speed);
+}
+
+a { color: var(--text-link); text-decoration: none; }
+a:hover { color: var(--text-link-hover); }
+
+/* ============================================================
+   Scrollbar
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+/* ============================================================
+   Sidebar
+   ============================================================ */
+.sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-speed), margin-left var(--transition-speed);
+  z-index: 100;
+}
+
+.sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.sidebar-header h1 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-header .subtitle {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.sidebar-search {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.sidebar-search input {
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: var(--font-ui);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.sidebar-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.sidebar-search .search-icon {
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+  overscroll-behavior: contain;
+}
+
+/* ---- Nav Groups ---- */
+.nav-group {
+  margin: 0;
+}
+
+.nav-group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-tertiary);
+  user-select: none;
+  transition: background var(--transition-speed);
+}
+
+.nav-group-header:hover {
+  background: var(--bg-hover);
+}
+
+.nav-group-header .arrow {
+  font-size: 10px;
+  transition: transform var(--transition-speed);
+  flex-shrink: 0;
+}
+
+.nav-group.collapsed .nav-group-header .arrow {
+  transform: rotate(-90deg);
+}
+
+.nav-group.collapsed .nav-group-items {
+  display: none;
+}
+
+/* ---- Nav Sections ---- */
+.nav-section {
+  margin: 0;
+}
+
+.nav-section-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px 6px 24px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  user-select: none;
+  transition: background var(--transition-speed);
+  border-radius: 0 6px 6px 0;
+  margin-right: 8px;
+}
+
+.nav-section-header:hover {
+  background: var(--bg-hover);
+}
+
+.nav-section-header .arrow {
+  font-size: 9px;
+  transition: transform var(--transition-speed);
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--text-tertiary);
+}
+
+.nav-section.collapsed .nav-section-header .arrow {
+  transform: rotate(-90deg);
+}
+
+.nav-section.collapsed .nav-articles {
+  display: none;
+}
+
+.nav-section-header .section-num {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  font-weight: 400;
+  flex-shrink: 0;
+}
+
+/* ---- Nav Articles ---- */
+.nav-articles {
+  list-style: none;
+}
+
+.nav-article {
+  display: block;
+  padding: 5px 16px 5px 40px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  border-radius: 0 6px 6px 0;
+  margin-right: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+}
+
+.nav-article:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.nav-article.active {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.nav-article .article-num {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-right: 4px;
+  font-weight: 400;
+}
+
+/* ---- Sidebar Footer ---- */
+.sidebar-footer {
+  padding: 8px 16px;
+  border-top: 1px solid var(--border-color);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sidebar-footer-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sidebar-footer a {
+  color: var(--text-tertiary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.sidebar-footer a:hover {
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   Main Area
+   ============================================================ */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-width: 0;
+  background: var(--reader-bg);
+  transition: background var(--transition-speed);
+}
+
+/* ---- Top Bar ---- */
+.topbar {
+  height: var(--topbar-height);
+  min-height: var(--topbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  gap: 8px;
+  z-index: 50;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Hamburger */
+.hamburger {
+  display: flex;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--text-primary);
+  font-size: 20px;
+  line-height: 1;
+  border-radius: 6px;
+}
+
+.hamburger:hover { background: var(--bg-hover); }
+
+/* Breadcrumb */
+.breadcrumb {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+/* ---- Controls ---- */
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 16px;
+  transition: all var(--transition-speed);
+  position: relative;
+}
+
+.control-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+.control-btn.active { background: var(--accent); color: var(--accent-text); }
+
+.control-btn .tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-speed);
+  z-index: 200;
+}
+
+.control-btn:hover .tooltip {
+  opacity: 1;
+}
+
+.control-select {
+  height: 32px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-family: var(--font-ui);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+  max-width: 110px;
+}
+
+.control-select:focus {
+  border-color: var(--accent);
+}
+
+/* ---- Content ---- */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+.content-inner {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 32px 40px 64px;
+  color: var(--reader-text);
+  font-family: var(--font-reading);
+  font-size: calc(var(--font-size-reading) * var(--font-size-multiplier));
+  line-height: var(--line-height-reading);
+  transition: color var(--transition-speed), font-size var(--transition-speed);
+}
+
+/* ---- Welcome Screen ---- */
+.welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 40px;
+}
+
+.welcome h2 {
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.welcome p {
+  color: var(--text-secondary);
+  max-width: 500px;
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+
+.welcome .stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.welcome .stat {
+  text-align: center;
+}
+
+.welcome .stat-num {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.welcome .stat-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   Markdown Content Styling
+   ============================================================ */
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  color: var(--reader-text);
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 700;
+  line-height: 1.3;
+  scroll-margin-top: 20px;
+}
+
+.markdown-body h1 { font-size: var(--font-size-h1); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+.markdown-body h2 { font-size: var(--font-size-h2); border-bottom: 1px solid var(--border-light); padding-bottom: 6px; }
+.markdown-body h3 { font-size: var(--font-size-h3); }
+
+.markdown-body p {
+  margin-bottom: 1em;
+}
+
+.markdown-body strong {
+  font-weight: 700;
+  color: var(--reader-text);
+}
+
+.markdown-body em { font-style: italic; }
+
+.markdown-body blockquote {
+  margin: 1em 0;
+  padding: 12px 20px;
+  border-left: 4px solid var(--blockquote-border);
+  background: var(--blockquote-bg);
+  border-radius: 0 8px 8px 0;
+  color: var(--text-secondary);
+}
+
+.markdown-body blockquote p:last-child { margin-bottom: 0; }
+
+.markdown-body code {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-code);
+  background: var(--bg-code);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--reader-text);
+}
+
+.markdown-body pre {
+  margin: 1em 0;
+  padding: 16px 20px;
+  background: var(--bg-code);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: var(--font-size-code);
+  line-height: 1.6;
+}
+
+.markdown-body pre code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin: 0.75em 0;
+  padding-left: 1.5em;
+}
+
+.markdown-body li {
+  margin-bottom: 0.3em;
+}
+
+.markdown-body li > ul, .markdown-body li > ol {
+  margin-top: 0.3em;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 1em 0;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.95em;
+}
+
+.markdown-body th {
+  background: var(--bg-secondary);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid var(--table-border);
+}
+
+.markdown-body td {
+  padding: 8px 14px;
+  border: 1px solid var(--table-border);
+}
+
+.markdown-body tr:nth-child(even) td {
+  background: var(--table-stripe);
+}
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 2em 0;
+}
+
+.markdown-body a {
+  color: var(--text-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.markdown-body a:hover {
+  color: var(--text-link-hover);
+}
+
+/* ---- Details/Summary (collapsible sections in markdown) ---- */
+.markdown-body details {
+  margin: 1em 0;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+}
+
+.markdown-body summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: 4px 0;
+}
+
+.markdown-body summary:hover { color: var(--accent); }
+
+/* ---- Tags / Badges ---- */
+.markdown-body .tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: 500;
+  margin: 0 2px;
+}
+
+/* ============================================================
+   Sidebar Collapse (desktop toggle)
+   ============================================================ */
+.sidebar.collapsed {
+  display: none;
+}
+
+/* ============================================================
+   Mobile Sidebar Overlay
+   ============================================================ */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  z-index: 99;
+}
+
+/* ============================================================
+   Loading & Error States
+   ============================================================ */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: var(--text-tertiary);
+  gap: 10px;
+}
+
+.loading .spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-state {
+  text-align: center;
+  padding: 40px;
+  color: #dc3545;
+}
+
+.error-state .icon { font-size: 40px; margin-bottom: 12px; }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 280px;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay.visible {
+    display: block;
+  }
+
+  .hamburger { display: flex; }
+
+  .breadcrumb { font-size: 12px; max-width: 180px; }
+
+  .content-inner {
+    padding: 20px 16px 40px;
+    font-size: 16px;
+  }
+
+  .control-btn .tooltip { display: none; }
+  .control-select { max-width: 90px; font-size: 11px; }
+  .topbar { padding: 0 10px; gap: 4px; }
+}
+
+@media (max-width: 480px) {
+  .welcome .stats { flex-direction: column; gap: 12px; }
+  .welcome h2 { font-size: 22px; }
+  .control-group.hide-mobile { display: none; }
+}
+
+/* ============================================================
+   Print
+   ============================================================ */
+@media print {
+  .sidebar, .topbar, .sidebar-overlay { display: none !important; }
+  .main { height: auto; overflow: visible; }
+  .content { overflow: visible; }
+  .content-inner { max-width: 100%; padding: 0; }
+}
+
+/* ============================================================
+   Prism.js Overrides — blend with theme
+   ============================================================ */
+.markdown-body pre[class*="language-"] {
+  background: var(--bg-code);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.markdown-body code[class*="language-"] {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-code);
+}
+
+/* Prism token overrides for better contrast on custom backgrounds */
+.markdown-body .token.comment,
+.markdown-body .token.prolog,
+.markdown-body .token.doctype,
+.markdown-body .token.cdata {
+  color: var(--text-tertiary);
+}
+
+/* ============================================================
+   KaTeX Overrides — ensure formulas blend with reading colors
+   ============================================================ */
+.markdown-body .katex {
+  font-size: 1.1em;
+}
+
+.markdown-body .katex-display {
+  margin: 1em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* KaTeX error fallback */
+.markdown-body .katex .katex-error {
+  color: #dc3545;
+}
+
+/* Respect reading background in display math */
+.markdown-body .katex-display > .katex {
+  color: var(--reader-text);
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     Sidebar Overlay (mobile)
+     ============================================================ -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- ============================================================
+     Sidebar
+     ============================================================ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h1 style="cursor:pointer" onclick="goHome()" title="На главную">📚 DensePedia</h1>
+    <div class="subtitle">База знаний Senior-инженера</div>
+  </div>
+
+  <div class="sidebar-search" style="position:relative">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Поиск по статьям…" oninput="filterNavigation()">
+  </div>
+
+  <nav class="sidebar-nav" id="sidebarNav">
+    <!-- Dynamically filled by JS -->
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-footer-line">
+      <span>© 2026 Vitali Semianiaka</span>
+      <span>·</span>
+      <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>
+      <span>·</span>
+      <a href="https://www.linkedin.com/in/semeniaka-vitaly-9b895b70/" target="_blank" rel="noopener" title="LinkedIn профиль">🔗 LinkedIn</a>
+    </div>
+    <div class="sidebar-footer-line">
+      <span style="background:#0a66c2;color:#fff;font-size:9px;padding:2px 6px;border-radius:3px;font-weight:700;" title="Открыт к предложениям">#OpenToWork</span>
+      <span style="font-size:10px" title="Создано за 4 часа, затраты на LLM < $2">⚡ 4h · <$2</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ============================================================
+     Main Area
+     ============================================================ -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Меню">☰</button>
+      <span class="breadcrumb" id="breadcrumb" style="cursor:pointer" onclick="goHome()" title="На главную">🏠 DensePedia</span>
+    </div>
+
+    <div class="topbar-right">
+      <!-- GitHub link -->
+      <a href="https://github.com/vitaly-sem/DensePedia" target="_blank" rel="noopener" class="control-btn" title="GitHub репозиторий" style="text-decoration:none;margin-right:6px;">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" style="display:block;"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span class="tooltip">GitHub</span>
+      </a>
+      <!-- Theme toggle -->
+      <div class="control-group hide-mobile" id="themeGroup">
+        <button class="control-btn" data-theme="light" onclick="setTheme('light')" aria-label="Светлая тема">
+          ☀️<span class="tooltip">Светлая</span>
+        </button>
+        <button class="control-btn active" data-theme="system" onclick="setTheme('system')" aria-label="Системная тема">
+          💻<span class="tooltip">Системная</span>
+        </button>
+        <button class="control-btn" data-theme="dark" onclick="setTheme('dark')" aria-label="Тёмная тема">
+          🌙<span class="tooltip">Тёмная</span>
+        </button>
+      </div>
+
+      <!-- Reading color -->
+      <select class="control-select" id="readColorSelect" onchange="setReadColor(this.value)" aria-label="Цвет для чтения">
+        <option value="white">⬜ Белый</option>
+        <option value="cream">🍶 Кремовый</option>
+        <option value="sepia">📜 Сепия</option>
+        <option value="soft-green">🌿 Зелёный</option>
+        <option value="gray">🩶 Серый</option>
+        <option value="dark">◼️ Тёмный</option>
+        <option value="dark-blue">🌌 Синий</option>
+        <option value="black">⬛ Чёрный</option>
+      </select>
+
+      <!-- Font -->
+      <select class="control-select" id="readFontSelect" onchange="setReadFont(this.value)" aria-label="Шрифт">
+        <option value="serif">Serif</option>
+        <option value="sans-serif">Sans</option>
+        <option value="monospace">Mono</option>
+        <option value="book">Book</option>
+      </select>
+
+      <!-- Font Size -->
+      <div class="control-group" id="fontSizeGroup">
+        <button class="control-btn" onclick="adjustFontSize(-1)" aria-label="Уменьшить шрифт">
+          A⁻<span class="tooltip">Мельче</span>
+        </button>
+        <span class="font-size-label" id="fontSizeLabel" style="font-size:11px;padding:0 2px;min-width:24px;text-align:center;color:var(--text-secondary);user-select:none;">100%</span>
+        <button class="control-btn" onclick="adjustFontSize(1)" aria-label="Увеличить шрифт">
+          A⁺<span class="tooltip">Крупнее</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content" id="content">
+    <div class="content-inner markdown-body" id="contentInner">
+      <!-- Welcome screen by default -->
+      <div class="welcome" id="welcomeScreen">
+        <h2>📚 Добро пожаловать в DensePedia</h2>
+        <p>Сборник статей для подготовки к техническим интервью и расширения кругозора Senior-инженера.</p>
+        <p>Выберите раздел и статью в боковой панели, чтобы начать чтение.</p>
+        <p style="font-size:13px;color:var(--text-tertiary);margin-top:12px;font-style:italic;">
+          Автор: <strong>Vitali Semianiaka</strong> — проект создан за <strong>4 часа</strong>, затраты на LLM <strong>< $2</strong>
+        </p>
+        <p style="font-size:13px;margin-top:6px;">
+          <a href="https://github.com/vitaly-sem/DensePedia" target="_blank" rel="noopener" style="color:var(--text-link);">⭐ GitHub</a>
+          <span style="margin:0 6px;color:var(--text-tertiary);">·</span>
+          <a href="https://www.linkedin.com/in/semeniaka-vitaly-9b895b70/" target="_blank" rel="noopener" style="color:var(--text-link);">🔗 LinkedIn</a>
+          <span style="background:#0a66c2;color:#fff;font-size:10px;padding:2px 7px;border-radius:3px;font-weight:700;margin-left:8px;vertical-align:middle;">#OpenToWork</span>
+        </p>
+        <details style="margin-top:12px;font-size:12px;color:var(--text-tertiary);max-width:520px;margin-left:auto;margin-right:auto;text-align:left;">
+          <summary style="cursor:pointer;font-weight:600;color:var(--text-secondary);">🚀 Как запустить viewer (1 строка)</summary>
+          <pre style="margin-top:8px;font-size:11px;line-height:1.8;background:var(--bg-code);padding:10px 14px;border-radius:6px;overflow-x:auto;"><code>python3 -m http.server 8080                   # Python
+npx serve . -p 8080                            # Node.js
+npx http-server -p 8080                        # Node.js (alt)
+php -S localhost:8080                          # PHP
+ruby -run -e httpd . -p 8080                   # Ruby
+deno run -A jsr:@std/http/file-server          # Deno
+dotnet tool install --global dotnet-serve ; dotnet serve --port 8080  # .NET
+caddy file-server --listen :8080               # Caddy</code></pre>
+        </details>
+        <div class="stats">
+          <div class="stat"><div class="stat-num">43</div><div class="stat-label">Раздел</div></div>
+          <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Статей</div></div>
+          <div class="stat"><div class="stat-num">4</div><div class="stat-label">Группы</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// ============================================================
+// DensePedia Viewer — JavaScript
+// ============================================================
+
+// ---- Navigation Tree ----
+// Structure mirrors README.md. Each section has: id, title, dir, articles: [{num, title, file}]
+const NAV_TREE = [
+  {
+    id: "programming",
+    title: "💻 Программирование",
+    icon: "💻",
+    sections: [
+      { id: "001", title: "Безопасность", dir: "001-security", articles: [
+        { num: 1, title: "OWASP Top 10", file: "01-owasp-top10.md" },
+        { num: 2, title: "Аутентификация и авторизация", file: "02-authentication-authorization.md" },
+        { num: 3, title: "Шифрование и хеширование", file: "03-encryption-hashing.md" },
+        { num: 4, title: "Безопасность API", file: "04-api-security.md" },
+        { num: 5, title: "Конфигурация и транспорт", file: "05-configuration-transport.md" }
+      ]},
+      { id: "002", title: "WPF (Продвинутые вопросы)", dir: "002-wpf-advanced", articles: [
+        { num: 1, title: "VisualTree vs LogicalTree", file: "01-visual-tree.md" },
+        { num: 2, title: "Dependency Properties", file: "02-dependency-properties.md" },
+        { num: 3, title: "Routed Events и Commands", file: "03-routed-events-commands.md" },
+        { num: 4, title: "Data Binding", file: "04-data-binding.md" },
+        { num: 5, title: "Templating", file: "05-templating.md" },
+        { num: 6, title: "Производительность", file: "06-performance.md" },
+        { num: 7, title: "Dispatcher и многопоточность", file: "07-dispatcher-threading.md" },
+        { num: 8, title: "WeakEvent и MVVM", file: "08-weak-event-mvvm.md" },
+        { num: 9, title: "Attached Behaviours", file: "09-attached-behaviours.md" }
+      ]},
+      { id: "003", title: "Многопоточность", dir: "003-multithreading", articles: [
+        { num: 1, title: "Thread vs Task vs ThreadPool", file: "01-thread-task-threadpool.md" },
+        { num: 2, title: "async/await — State Machine", file: "02-async-await.md" },
+        { num: 3, title: "Task Advanced", file: "03-task-advanced.md" },
+        { num: 4, title: "Синхронизация", file: "04-synchronization.md" },
+        { num: 5, title: "Concurrent Collections", file: "05-concurrent-collections.md" },
+        { num: 6, title: "Parallel и PLINQ", file: "06-parallel-plinq.md" },
+        { num: 7, title: "TLS и TPL Dataflow", file: "07-tls-dataflow.md" },
+        { num: 8, title: "Memory Model", file: "08-memory-model.md" }
+      ]},
+      { id: "004", title: "Защита данных и DLP", dir: "004-dlp", articles: [
+        { num: 1, title: "Основы DLP и классификация данных", file: "01-dlp-basics-classification.md" },
+        { num: 2, title: "Шифрование", file: "02-encryption-at-rest-transit.md" },
+        { num: 3, title: "Защита от утечек", file: "03-data-leakage-prevention.md" },
+        { num: 4, title: "DLP в Azure", file: "04-azure-dlp.md" },
+        { num: 5, title: "Аудит и мониторинг", file: "05-audit-monitoring.md" },
+        { num: 6, title: "Защита персональных данных", file: "06-personal-data-protection.md" }
+      ]},
+      { id: "005", title: "Коллекции и алгоритмы", dir: "005-collections-algorithms", articles: [
+        { num: 1, title: "Внутреннее устройство коллекций", file: "01-dotnet-collections.md" },
+        { num: 2, title: "Big O, сортировка, поиск", file: "02-complexity-sorting.md" },
+        { num: 3, title: "Сравнение коллекций", file: "03-collections-comparison.md" },
+        { num: 4, title: "LINQ Internals", file: "04-linq-internals.md" },
+        { num: 5, title: "Span, Memory, stackalloc", file: "05-spans-memory.md" }
+      ]},
+      { id: "006", title: "Шаблоны проектирования", dir: "006-design-patterns", articles: [
+        { num: 1, title: "SOLID и принципы", file: "01-solid-principles.md" },
+        { num: 2, title: "GoF Порождающие", file: "02-gof-creational.md" },
+        { num: 3, title: "GoF Структурные", file: "03-gof-structural.md" },
+        { num: 4, title: "GoF Поведенческие", file: "04-gof-behavioral.md" },
+        { num: 5, title: "Enterprise Patterns", file: "05-enterprise-patterns.md" },
+        { num: 6, title: "Clean Architecture и DI", file: "06-clean-architecture-di.md" }
+      ]},
+      { id: "007", title: "Оптимизация и тестирование", dir: "007-optimization-testing", articles: [
+        { num: 1, title: "Профилирование", file: "01-profiling-benchmarking.md" },
+        { num: 2, title: "GC и память", file: "02-memory-gc.md" },
+        { num: 3, title: "Производительность кода", file: "03-code-performance.md" },
+        { num: 4, title: "Unit-тестирование", file: "04-unit-testing.md" },
+        { num: 5, title: "Интеграционное тестирование", file: "05-integration-testing.md" },
+        { num: 6, title: "Качество кода", file: "06-code-quality.md" }
+      ]},
+      { id: "008", title: "Advanced GC и Memory", dir: "008-gc-memory", articles: [
+        { num: 1, title: "GC Internals", file: "01-gc-internals.md" },
+        { num: 2, title: "GC Modes", file: "02-gc-modes-config.md" },
+        { num: 3, title: "Диагностика", file: "03-memory-diagnostics.md" },
+        { num: 4, title: "Native Memory", file: "04-native-memory.md" },
+        { num: 5, title: "GC Tuning", file: "05-gc-tuning.md" }
+      ]},
+      { id: "009", title: "Authorization Libraries", dir: "009-auth-libraries", articles: [
+        { num: 1, title: "Auth Libraries & Best Practices", file: "01-auth-libraries-best-practices.md" }
+      ]},
+      { id: "010", title: "Angular", dir: "010-angular", articles: [
+        { num: 1, title: "Angular Basics", file: "01-angular-basics.md" },
+        { num: 2, title: "Angular Advanced", file: "02-angular-advanced.md" },
+        { num: 3, title: "Angular Version History", file: "03-angular-version-history.md" },
+        { num: 4, title: "Angular Practical Tips", file: "04-angular-practical-tips.md" }
+      ]},
+      { id: "011", title: "Vue.js", dir: "011-vuejs", articles: [
+        { num: 1, title: "Vue.js Basics", file: "01-vuejs-basics.md" },
+        { num: 2, title: "Vue.js Advanced", file: "02-vuejs-advanced.md" },
+        { num: 3, title: "Vue.js Version History", file: "03-vuejs-version-history.md" },
+        { num: 4, title: "Vue.js Practical Tips", file: "04-vuejs-practical-tips.md" },
+        { num: 5, title: "Nuxt.js", file: "05-nuxtjs.md" }
+      ]},
+      { id: "012", title: "React", dir: "012-react", articles: [
+        { num: 1, title: "React Basics", file: "01-react-basics.md" },
+        { num: 2, title: "React Advanced", file: "02-react-advanced.md" },
+        { num: 3, title: "React Version History", file: "03-react-version-history.md" },
+        { num: 4, title: "React Practical Tips", file: "04-react-practical-tips.md" },
+        { num: 5, title: "Next.js", file: "05-nextjs.md" }
+      ]},
+      { id: "013", title: "HTML5 & CSS3", dir: "013-html5-css3", articles: [
+        { num: 1, title: "HTML5 CSS3 Classics", file: "01-html5-css3-classics.md" },
+        { num: 2, title: "HTML5 New Features Part 1", file: "02-html5-new-features-part1.md" },
+        { num: 3, title: "HTML5 New Features Part 2", file: "03-html5-new-features-part2.md" },
+        { num: 4, title: "Tailwind CSS", file: "04-tailwind-css.md" },
+        { num: 5, title: "Bootstrap", file: "05-bootstrap.md" },
+        { num: 6, title: "Material Design", file: "06-material-design.md" },
+        { num: 7, title: "PWA", file: "07-pwa.md" },
+        { num: 8, title: "CSS Анимации и эффекты", file: "08-animations-effects.md" }
+      ]},
+      { id: "014", title: "Game Engines", dir: "014-game-engines", articles: [
+        { num: 1, title: "Web Game Engines Comparison", file: "01-web-game-engines-comparison.md" }
+      ]},
+      { id: "015", title: "Svelte", dir: "015-svelte", articles: [
+        { num: 1, title: "Svelte Basics", file: "01-svelte-basics.md" },
+        { num: 2, title: "Svelte Advanced", file: "02-svelte-advanced-no-vdom.md" },
+        { num: 3, title: "Svelte Practical Tips", file: "03-svelte-practical-tips.md" }
+      ]},
+      { id: "016", title: "Code Review & AI Coding", dir: "016-modern-code-review", articles: [
+        { num: 1, title: "Modern Code Review & Copilot", file: "01-modern-code-review-copilot.md" }
+      ]},
+      { id: "017", title: "Базы данных", dir: "017-databases", articles: [
+        { num: 1, title: "Реляционные базы данных и SQL", file: "01-relational-sql.md" },
+        { num: 2, title: "NoSQL и NewSQL", file: "02-nosql-newsql.md" },
+        { num: 3, title: "Проектирование и администрирование", file: "03-design-administration.md" }
+      ]},
+      { id: "018", title: "Системный дизайн и архитектура", dir: "018-system-design-architecture", articles: [
+        { num: 1, title: "Основы системного дизайна", file: "01-system-design-basics.md" },
+        { num: 2, title: "Микросервисы и распределённые системы", file: "02-microservices-distributed.md" },
+        { num: 3, title: "Масштабирование и performance", file: "03-scaling-performance.md" }
+      ]},
+      { id: "019", title: "C# Modern", dir: "019-csharp-modern", articles: [
+        { num: 1, title: "C# Language Features", file: "01-csharp-language-features.md" },
+        { num: 2, title: "Interview Tasks: Algorithms", file: "02-interview-tasks-algorithms.md" },
+        { num: 3, title: "Interview Tasks: Threading", file: "03-interview-tasks-threading.md" },
+        { num: 4, title: "Interview Tasks: Architecture", file: "04-interview-tasks-architecture.md" }
+      ]},
+      { id: "020", title: "F#", dir: "020-fsharp", articles: [
+        { num: 1, title: "F# Why Deserves Attention", file: "01-fsharp-why-deserves-attention.md" },
+        { num: 2, title: "F# Practical Examples", file: "02-fsharp-practical-examples.md" },
+        { num: 3, title: "F# vs C#", file: "03-fsharp-vs-csharp.md" }
+      ]}
+    ]
+  },
+  {
+    id: "development",
+    title: "🚀 Развитие и инфраструктура",
+    icon: "🚀",
+    sections: [
+      { id: "101", title: "Diffusion Models", dir: "101-diffusion-models", articles: [
+        { num: 1, title: "Diffusion Models Overview", file: "01-diffusion-models-overview.md" }
+      ]},
+      { id: "102", title: "Start-up Theory", dir: "102-startup-theory", articles: [
+        { num: 1, title: "Start-up Theory & Facts", file: "01-startup-theory-facts.md" },
+        { num: 2, title: "Startup Success & Failure", file: "02-startup-success-failure.md" },
+        { num: 3, title: "Полезные источники", file: "03-startup-resources-recommendations.md" },
+        { num: 4, title: "Платформы для плагинов", file: "04-plugin-marketplaces.md" }
+      ]},
+      { id: "103", title: "Здоровый образ жизни", dir: "103-healthy-lifestyle", articles: [
+        { num: 1, title: "Основы здорового питания", file: "01-healthy-lifestyle-basics.md" },
+        { num: 2, title: "Наука о питании", file: "02-nutrition-science.md" },
+        { num: 3, title: "Биохакинг и долголетие", file: "03-biohacking-longevity.md" },
+        { num: 4, title: "Работа мозга", file: "04-brain-optimization.md" },
+        { num: 5, title: "Экономическая грамотность", file: "05-economic-literacy.md" }
+      ]},
+      { id: "104", title: "Avalonia & XAML Mobile", dir: "104-avalonia-xaml-mobile", articles: [
+        { num: 1, title: "Avalonia, MAUI, Uno Platform", file: "01-avalonia-xaml-mobile.md" }
+      ]},
+      { id: "105", title: "Финансовые корпорации", dir: "105-financial-corporations", articles: [
+        { num: 1, title: "История и основатели", file: "01-history-founders.md" },
+        { num: 2, title: "Финансовая мощь", file: "02-power-influence.md" },
+        { num: 3, title: "Скандалы и кризисы", file: "03-scandals-crises.md" },
+        { num: 4, title: "Инновации и технологии", file: "04-innovation-technology.md" },
+        { num: 5, title: "Социальное влияние", file: "05-social-impact.md" },
+        { num: 6, title: "Библиотеки и ресурсы", file: "06-libraries-resources.md" },
+        { num: 7, title: "Корпоративная культура", file: "07-corporate-culture-showcase.md" }
+      ]},
+      { id: "106", title: "DevOps, инфраструктура и CI/CD", dir: "106-devops-cicd", articles: [
+        { num: 1, title: "Основы DevOps и CI/CD", file: "01-devops-basics.md" },
+        { num: 2, title: "Контейнеризация и оркестрация", file: "02-containerization-orchestration.md" },
+        { num: 3, title: "Облачные платформы", file: "03-cloud-platforms.md" },
+        { num: 4, title: "Мониторинг и observability", file: "04-monitoring-observability.md" }
+      ]},
+      { id: "107", title: "Софт-скиллы для Senior", dir: "107-soft-skills-senior", articles: [
+        { num: 1, title: "Коммуникация и фасилитация", file: "01-communication-facilitation.md" },
+        { num: 2, title: "Менторство и развитие команды", file: "02-mentoring-team-development.md" },
+        { num: 3, title: "Принятие решений и конфликты", file: "03-decision-conflicts.md" }
+      ]}
+    ]
+  },
+  {
+    id: "science",
+    title: "🧠 Наука и AI",
+    icon: "🧠",
+    sections: [
+      { id: "201", title: "Научные открытия XX века", dir: "201-science-20th-century", articles: [
+        { num: 1, title: "Наука XX века", file: "01-science-20th-century.md" }
+      ]},
+      { id: "202", title: "Научные открытия XXI века", dir: "202-science-21st-century", articles: [
+        { num: 1, title: "Наука XXI века", file: "01-science-21st-century.md" }
+      ]},
+      { id: "203", title: "Теории происхождения", dir: "203-origin-theories", articles: [
+        { num: 1, title: "Научные теории", file: "01-scientific.md" },
+        { num: 2, title: "Псевдонаучные теории", file: "02-pseudoscientific.md" },
+        { num: 3, title: "Философские концепции", file: "03-philosophical.md" },
+        { num: 4, title: "Библиотеки и ресурсы", file: "04-libraries-resources.md" }
+      ]},
+      { id: "204", title: "Искусственный интеллект и ML", dir: "204-ai-ml", articles: [
+        { num: 1, title: "Основы машинного обучения", file: "01-ml-basics.md" },
+        { num: 2, title: "LLM и NLP", file: "02-llm-nlp.md" },
+        { num: 3, title: "Практическое применение AI", file: "03-ai-practical.md" }
+      ]}
+    ]
+  },
+  {
+    id: "humanities",
+    title: "📚 Гуманитарные науки",
+    icon: "📚",
+    sections: [
+      { id: "301", title: "История 1810–1900", dir: "301-history-1810-1900", articles: [
+        { num: 1, title: "События 1810-1900", file: "01-history-1810-1900.md" },
+        { num: 2, title: "Конфликты 1810-1900", file: "02-conflicts-1810-1900.md" }
+      ]},
+      { id: "302", title: "История 1901–1930", dir: "302-history-1901-1930", articles: [
+        { num: 1, title: "События 1901-1930", file: "01-history-1901-1930.md" },
+        { num: 2, title: "Конфликты 1901-1930", file: "02-conflicts-1901-1930.md" }
+      ]},
+      { id: "303", title: "История 1931–1945", dir: "303-history-1931-1945", articles: [
+        { num: 1, title: "События 1931-1945", file: "01-history-1931-1945.md" },
+        { num: 2, title: "Конфликты 1931-1945", file: "02-conflicts-1931-1945.md" }
+      ]},
+      { id: "304", title: "История 1946–1980", dir: "304-history-1946-1980", articles: [
+        { num: 1, title: "События 1946-1980", file: "01-history-1946-1980.md" },
+        { num: 2, title: "Конфликты 1946-1980", file: "02-conflicts-1946-1980.md" }
+      ]},
+      { id: "305", title: "История 1981–1993", dir: "305-history-1981-1993", articles: [
+        { num: 1, title: "События 1981-1993", file: "01-history-1981-1993.md" },
+        { num: 2, title: "Конфликты 1981-1993", file: "02-conflicts-1981-1993.md" }
+      ]},
+      { id: "306", title: "История 1993–2012", dir: "306-history-1993-2012", articles: [
+        { num: 1, title: "События 1993-2012", file: "01-history-1993-2012.md" },
+        { num: 2, title: "Конфликты 1993-2012", file: "02-conflicts-1993-2012.md" }
+      ]},
+      { id: "307", title: "История 2013–present", dir: "307-history-2013-present", articles: [
+        { num: 1, title: "События 2013-present", file: "01-history-2013-present.md" },
+        { num: 2, title: "Конфликты 2013-present", file: "02-conflicts-2013-present.md" }
+      ]},
+      { id: "308", title: "Мировая литература", dir: "308-world-literature", articles: [
+        { num: 1, title: "Общий справочник", file: "01-world-literature.md" },
+        { num: 2, title: "Мировая классика", file: "02-world-classics.md" },
+        { num: 3, title: "Русская классика", file: "03-russian-classics.md" },
+        { num: 4, title: "Современная литература", file: "04-contemporary-literature.md" },
+        { num: 5, title: "Фантастика (Sci-Fi)", file: "05-science-fiction.md" },
+        { num: 6, title: "Фэнтези", file: "06-fantasy.md" },
+        { num: 7, title: "Детектив и триллер", file: "07-detective-thriller.md" },
+        { num: 8, title: "Антиутопия", file: "08-dystopia.md" },
+        { num: 9, title: "Исторический роман", file: "09-historical-novel.md" },
+        { num: 10, title: "Нон-фикшн и научпоп", file: "10-nonfiction.md" },
+        { num: 11, title: "Исторические исследования", file: "11-historical-research.md" }
+      ]},
+      { id: "309", title: "Мифы и легенды", dir: "309-myths-legends", articles: [
+        { num: 1, title: "Греческая и римская мифология", file: "01-greek-roman.md" },
+        { num: 2, title: "Скандинавская и германская", file: "02-norse-germanic.md" },
+        { num: 3, title: "Египетская и месопотамская", file: "03-egypt-mesopotamia.md" },
+        { num: 4, title: "Славянская и балтийская", file: "04-slavic-baltic.md" },
+        { num: 5, title: "Индийская, китайская, японская", file: "05-india-china-japan.md" },
+        { num: 6, title: "Кельтская, финская, Америки", file: "06-celtic-finno-americas.md" },
+        { num: 7, title: "Библиотеки и ресурсы", file: "07-libraries-resources.md" }
+      ]},
+      { id: "310", title: "Мировые религии", dir: "310-world-religions", articles: [
+        { num: 1, title: "Ранние верования", file: "01-early-ancient.md" },
+        { num: 2, title: "Буддизм и восточные религии", file: "02-buddhism-eastern.md" },
+        { num: 3, title: "Иудаизм", file: "03-judaism.md" },
+        { num: 4, title: "Христианство", file: "04-christianity.md" },
+        { num: 5, title: "Ислам", file: "05-islam.md" },
+        { num: 6, title: "Новые религиозные движения", file: "06-modern-movements.md" },
+        { num: 7, title: "Библиотеки и ресурсы", file: "07-libraries-resources.md" }
+      ]},
+      { id: "311", title: "Современная психология", dir: "311-modern-psychology", articles: [
+        { num: 1, title: "Разделы психологии", file: "01-branches.md" },
+        { num: 2, title: "Известные учёные и деятели", file: "02-famous-figures.md" },
+        { num: 3, title: "Псевдопсихологи", file: "03-pseudopsychology.md" },
+        { num: 4, title: "Борьба с зависимостями", file: "04-addiction.md" },
+        { num: 5, title: "Психотипы и характеры", file: "05-psychotypes.md" },
+        { num: 6, title: "Социальные отношения", file: "06-social-relations.md" },
+        { num: 7, title: "Инфобизнес и НЛП", file: "07-infobusiness-nlp.md" },
+        { num: 8, title: "Разрешение конфликтов", file: "08-conflict-resolution.md" },
+        { num: 9, title: "Преодоление трудностей", file: "09-overcoming-difficulties.md" },
+        { num: 10, title: "Как быть счастливым", file: "10-happiness.md" },
+        { num: 11, title: "Корпоративная культура", file: "11-corporate-culture.md" }
+      ]},
+      { id: "312", title: "Философия и критическое мышление", dir: "312-philosophy-critical-thinking", articles: [
+        { num: 1, title: "Основы критического мышления", file: "01-critical-thinking.md" },
+        { num: 2, title: "Научный метод и логика", file: "02-scientific-method-logic.md" },
+        { num: 3, title: "Философские концепции и этика", file: "03-philosophy-ethics.md" }
+      ]}
+    ]
+  }
+];
+
+// ---- State ----
+let currentArticlePath = null;
+let isMobileOpen = false;
+
+// ---- DOM References ----
+const sidebar = document.getElementById('sidebar');
+const sidebarNav = document.getElementById('sidebarNav');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+const contentInner = document.getElementById('contentInner');
+const breadcrumb = document.getElementById('breadcrumb');
+const searchInput = document.getElementById('searchInput');
+const themeGroup = document.getElementById('themeGroup');
+const readColorSelect = document.getElementById('readColorSelect');
+const readFontSelect = document.getElementById('readFontSelect');
+
+// ---- Initialize marked.js ----
+if (typeof marked !== 'undefined') {
+  marked.setOptions({
+    gfm: true,
+    breaks: true,
+    headerIds: true,
+    mangle: false
+  });
+
+  // Configure Prism.js for code highlighting
+  if (typeof Prism !== 'undefined') {
+    marked.setOptions({
+      highlight: function(code, lang) {
+        if (lang && Prism.languages[lang]) {
+          try {
+            return Prism.highlight(code, Prism.languages[lang], lang);
+          } catch (e) { /* fall through */ }
+        }
+        // Try to auto-detect via Prism autoloader, fallback to plain text
+        try {
+          if (lang && typeof Prism.plugins?.autoloader?.loadLanguages === 'function') {
+            // Language will be loaded asynchronously; return plain code for now
+            return code;
+          }
+          return Prism.highlight(code, Prism.languages.markup, 'markup');
+        } catch (e) { /* fall through */ }
+        return code;
+      }
+    });
+  }
+}
+
+// ============================================================
+// Build Navigation
+// ============================================================
+function buildNavigation() {
+  let html = '';
+
+  for (const group of NAV_TREE) {
+    html += `<div class="nav-group" data-group="${group.id}">`;
+    html += `<div class="nav-group-header" onclick="toggleNavGroup(this.parentElement)" title="${group.title}">`;
+    html += `<span class="arrow">▼</span>`;
+    html += `<span>${group.title}</span>`;
+    html += `</div>`;
+    html += `<div class="nav-group-items">`;
+
+    for (const section of group.sections) {
+      html += `<div class="nav-section" data-section="${section.id}" data-group="${group.id}">`;
+      html += `<div class="nav-section-header" onclick="toggleNavSection(this.parentElement)" title="${section.title}">`;
+      html += `<span class="section-num">${section.id}</span>`;
+      html += `<span>${section.title}</span>`;
+      html += `<span class="arrow">▼</span>`;
+      html += `</div>`;
+      html += `<div class="nav-articles">`;
+
+      for (const article of section.articles) {
+        const path = `${section.dir}/${article.file}`;
+        html += `<a class="nav-article" data-path="${path}" data-section="${section.id}" data-group="${group.id}"`;
+        html += ` data-title="${escapeHtml(article.title)}" data-section-title="${escapeHtml(section.title)}"`;
+        html += ` onclick="loadArticle('${path}', '${escapeHtml(section.title)}', '${escapeHtml(article.title)}', this)"`;
+        html += ` title="${escapeHtml(article.title)}">`;
+        html += `<span class="article-num">${String(article.num).padStart(2,'0')}</span>`;
+        html += escapeHtml(article.title);
+        html += `</a>`;
+      }
+
+      html += `</div></div>`;
+    }
+
+    html += `</div></div>`;
+  }
+
+  sidebarNav.innerHTML = html;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ---- Nav Toggles ----
+function toggleNavGroup(el) {
+  el.classList.toggle('collapsed');
+}
+
+function toggleNavSection(el) {
+  el.classList.toggle('collapsed');
+}
+
+// ---- Filter Navigation ----
+function filterNavigation() {
+  const query = searchInput.value.toLowerCase().trim();
+  const allGroups = sidebarNav.querySelectorAll('.nav-group');
+  const allSections = sidebarNav.querySelectorAll('.nav-section');
+  const allArticles = sidebarNav.querySelectorAll('.nav-article');
+
+  if (!query) {
+    // Show all
+    allGroups.forEach(g => g.style.display = '');
+    allSections.forEach(s => s.style.display = '');
+    allArticles.forEach(a => a.style.display = '');
+    // Re-collapse all groups
+    allGroups.forEach(g => g.classList.add('collapsed'));
+    allSections.forEach(s => s.classList.add('collapsed'));
+    return;
+  }
+
+  // Show matching articles and their parents
+  let anyVisible = false;
+
+  allArticles.forEach(a => {
+    const title = (a.dataset.title || '').toLowerCase();
+    const sectionTitle = (a.dataset.sectionTitle || '').toLowerCase();
+    const path = (a.dataset.path || '').toLowerCase();
+    const matches = title.includes(query) || sectionTitle.includes(query) || path.includes(query);
+
+    a.style.display = matches ? '' : 'none';
+    if (matches) anyVisible = true;
+  });
+
+  // Show sections that have visible articles
+  allSections.forEach(s => {
+    const visibleArticles = s.querySelectorAll('.nav-article[style*="display: none"]');
+    const totalArticles = s.querySelectorAll('.nav-article');
+    const hasVisible = visibleArticles.length < totalArticles.length;
+    s.style.display = hasVisible ? '' : 'none';
+    if (hasVisible) {
+      s.classList.remove('collapsed');
+    }
+  });
+
+  // Show groups that have visible sections
+  allGroups.forEach(g => {
+    const visibleSections = g.querySelectorAll('.nav-section[style*="display: none"]');
+    const totalSections = g.querySelectorAll('.nav-section');
+    const hasVisible = visibleSections.length < totalSections.length;
+    g.style.display = hasVisible ? '' : 'none';
+    if (hasVisible) {
+      g.classList.remove('collapsed');
+    }
+  });
+
+  if (!anyVisible) {
+    // If nothing matches, show everything collapsed
+    allGroups.forEach(g => { g.style.display = ''; g.classList.add('collapsed'); });
+    allSections.forEach(s => { s.style.display = ''; s.classList.add('collapsed'); });
+    allArticles.forEach(a => a.style.display = '');
+  }
+}
+
+// ============================================================
+// Load Article
+// ============================================================
+async function loadArticle(path, sectionTitle, articleTitle, linkEl, pushHistory = true) {
+  // Update active state
+  sidebarNav.querySelectorAll('.nav-article').forEach(a => a.classList.remove('active'));
+  if (linkEl) {
+    linkEl.classList.add('active');
+    // Expand parent section and group
+    const section = linkEl.closest('.nav-section');
+    if (section) section.classList.remove('collapsed');
+    const group = linkEl.closest('.nav-group');
+    if (group) group.classList.remove('collapsed');
+  } else {
+    // Try to find and highlight the nav link for this path
+    const navLink = sidebarNav.querySelector(`.nav-article[data-path="${CSS.escape(path)}"]`);
+    if (navLink) {
+      navLink.classList.add('active');
+      const section = navLink.closest('.nav-section');
+      if (section) section.classList.remove('collapsed');
+      const group = navLink.closest('.nav-group');
+      if (group) group.classList.remove('collapsed');
+    }
+  }
+
+  // Update breadcrumb
+  breadcrumb.textContent = `${sectionTitle} › ${articleTitle}`;
+
+  // Show loading
+  contentInner.innerHTML = `
+    <div class="loading">
+      <div class="spinner"></div>
+      <span>Загрузка статьи…</span>
+    </div>
+  `;
+
+  currentArticlePath = path;
+
+  try {
+    const response = await fetch(path);
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+
+    const markdown = await response.text();
+    let html;
+
+    if (typeof marked !== 'undefined') {
+      html = marked.parse(markdown);
+    } else {
+      // Fallback: basic rendering
+      html = `<pre>${escapeHtml(markdown)}</pre>`;
+    }
+
+    contentInner.innerHTML = `<div class="markdown-body">${html}</div>`;
+
+    // Apply Prism.js highlighting to all code blocks
+    if (typeof Prism !== 'undefined') {
+      try { Prism.highlightAllUnder(contentInner); } catch (e) { /* ignore */ }
+    }
+
+    // Render KaTeX math formulas
+    if (typeof renderMathInElement !== 'undefined') {
+      try {
+        renderMathInElement(contentInner, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false },
+            { left: '\\[', right: '\\]', display: true },
+            { left: '\\(', right: '\\)', display: false }
+          ],
+          throwOnError: false,
+          trust: true,
+          strict: false
+        });
+      } catch (e) { /* ignore */ }
+    }
+
+    // Scroll to top
+    document.getElementById('content').scrollTop = 0;
+
+    // Save to localStorage
+    saveLastArticle(path, sectionTitle, articleTitle);
+
+    // Push to browser history
+    if (pushHistory) {
+      const url = '#' + path;
+      if (window.location.hash !== url) {
+        history.pushState({ path, sectionTitle, articleTitle }, '', url);
+      }
+    }
+
+  } catch (err) {
+    console.error('Failed to load article:', err);
+    contentInner.innerHTML = `
+      <div class="error-state">
+        <div class="icon">⚠️</div>
+        <h3>Не удалось загрузить статью</h3>
+        <p>${escapeHtml(err.message)}</p>
+        <p style="font-size:13px;color:var(--text-tertiary);margin-top:8px;">
+          Убедитесь, что файл <code>${escapeHtml(path)}</code> существует и сервер запущен.
+        </p>
+      </div>
+    `;
+    breadcrumb.textContent = '🏠 DensePedia';
+  }
+
+  // Close mobile sidebar after article selection
+  if (!isDesktop() && isMobileOpen) closeSidebar();
+}
+
+// ============================================================
+// Persistence (localStorage)
+// ============================================================
+function saveLastArticle(path, sectionTitle, articleTitle) {
+  try {
+    localStorage.setItem('densepedia_last_article', JSON.stringify({
+      path: path,
+      sectionTitle: sectionTitle,
+      articleTitle: articleTitle,
+      timestamp: Date.now()
+    }));
+  } catch (e) { /* storage full or unavailable */ }
+}
+
+function restoreLastArticle() {
+  try {
+    const raw = localStorage.getItem('densepedia_last_article');
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    if (!data.path) return false;
+
+    // Find the nav element
+    const linkEl = sidebarNav.querySelector(`.nav-article[data-path="${CSS.escape(data.path)}"]`);
+    if (linkEl) {
+      loadArticle(data.path, data.sectionTitle, data.articleTitle, linkEl);
+      return true;
+    }
+    return false;
+  } catch (e) {
+    return false;
+  }
+}
+
+// ---- Theme ----
+function getSavedTheme() {
+  try { return localStorage.getItem('densepedia_theme') || 'system'; } catch (e) { return 'system'; }
+}
+
+function saveTheme(theme) {
+  try { localStorage.setItem('densepedia_theme', theme); } catch (e) { /* */ }
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  saveTheme(theme);
+
+  // Update active button
+  themeGroup.querySelectorAll('.control-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.theme === theme);
+  });
+
+  // Update Prism.js theme
+  updatePrismTheme(theme);
+}
+
+function updatePrismTheme(theme) {
+  const prismTheme = document.getElementById('prism-theme');
+  if (!prismTheme) return;
+  if (theme === 'dark') {
+    prismTheme.href = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css';
+  } else {
+    prismTheme.href = 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css';
+  }
+}
+
+// Handle system theme preference
+function applySystemTheme() {
+  const saved = getSavedTheme();
+  if (saved === 'system') {
+    document.documentElement.setAttribute('data-theme', 'system');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // We use CSS media query for system mode, but also set a class for JS logic
+    updatePrismTheme(prefersDark ? 'dark' : 'light');
+  } else {
+    setTheme(saved);
+  }
+
+  // Listen for system changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (getSavedTheme() === 'system') {
+      updatePrismTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+}
+
+// ---- Read Color ----
+function getSavedReadColor() {
+  try { return localStorage.getItem('densepedia_read_color') || 'white'; } catch (e) { return 'white'; }
+}
+
+function setReadColor(color) {
+  document.documentElement.setAttribute('data-read-color', color);
+  try { localStorage.setItem('densepedia_read_color', color); } catch (e) { /* */ }
+  readColorSelect.value = color;
+}
+
+// ---- Read Font ----
+function getSavedReadFont() {
+  try { return localStorage.getItem('densepedia_read_font') || 'serif'; } catch (e) { return 'serif'; }
+}
+
+function setReadFont(font) {
+  document.documentElement.setAttribute('data-read-font', font);
+  try { localStorage.setItem('densepedia_read_font', font); } catch (e) { /* */ }
+  readFontSelect.value = font;
+}
+
+// ---- Font Size ----
+const FONT_SIZE_STEPS = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'];
+const FONT_SIZE_LABELS = { xs: '75%', sm: '87%', md: '100%', lg: '112%', xl: '125%', xxl: '150%' };
+const DEFAULT_FONT_SIZE_IDX = 2; // 'md' = 100%
+
+function getSavedFontSize() {
+  try { return localStorage.getItem('densepedia_font_size') || 'md'; } catch (e) { return 'md'; }
+}
+
+function getFontSizeIndex(size) {
+  const idx = FONT_SIZE_STEPS.indexOf(size);
+  return idx >= 0 ? idx : DEFAULT_FONT_SIZE_IDX;
+}
+
+function setFontSize(size) {
+  document.documentElement.setAttribute('data-font-size', size);
+  try { localStorage.setItem('densepedia_font_size', size); } catch (e) { /* */ }
+  const label = document.getElementById('fontSizeLabel');
+  if (label) label.textContent = FONT_SIZE_LABELS[size] || '100%';
+}
+
+function adjustFontSize(delta) {
+  const current = getSavedFontSize();
+  const idx = getFontSizeIndex(current);
+  const newIdx = Math.max(0, Math.min(FONT_SIZE_STEPS.length - 1, idx + delta));
+  setFontSize(FONT_SIZE_STEPS[newIdx]);
+}
+
+// ============================================================
+// Sidebar Toggle (desktop + mobile)
+// ============================================================
+function isDesktop() {
+  return window.innerWidth > 768;
+}
+
+function toggleSidebar() {
+  if (isDesktop()) {
+    // Desktop: collapse / expand sidebar inline
+    sidebar.classList.toggle('collapsed');
+  } else {
+    // Mobile: overlay mode
+    isMobileOpen = !isMobileOpen;
+    if (isMobileOpen) {
+      sidebar.classList.add('open');
+      sidebarOverlay.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+      sidebar.classList.remove('collapsed'); // ensure not desktop-collapsed
+    } else {
+      closeSidebar();
+    }
+  }
+}
+
+function closeSidebar() {
+  isMobileOpen = false;
+  sidebar.classList.remove('open');
+  sidebarOverlay.classList.remove('visible');
+  document.body.style.overflow = '';
+}
+
+// Close sidebar on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (!isDesktop() && isMobileOpen) {
+      closeSidebar();
+    } else if (isDesktop() && sidebar.classList.contains('collapsed')) {
+      // Don't close on Escape for desktop — user might want to keep it hidden
+    }
+  }
+  // Keyboard shortcut: Ctrl+K / Cmd+K to focus search
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+});
+
+// ============================================================
+// Home / History
+// ============================================================
+function showWelcomeScreen() {
+  currentArticlePath = null;
+  breadcrumb.textContent = '🏠 DensePedia';
+  sidebarNav.querySelectorAll('.nav-article').forEach(a => a.classList.remove('active'));
+  contentInner.innerHTML = `
+    <div class="welcome" id="welcomeScreen">
+      <h2>📚 Добро пожаловать в DensePedia</h2>
+      <p>Сборник статей для подготовки к техническим интервью и расширения кругозора Senior-инженера.</p>
+      <p>Выберите раздел и статью в боковой панели, чтобы начать чтение.</p>
+      <p style="font-size:13px;color:var(--text-tertiary);margin-top:12px;font-style:italic;">
+        Автор: <strong>Vitali Semianiaka</strong> — проект создан за <strong>4 часа</strong>, затраты на LLM <strong>< $2</strong>
+      </p>
+      <p style="font-size:13px;margin-top:6px;">
+        <a href="https://github.com/vitaly-sem/DensePedia" target="_blank" rel="noopener" style="color:var(--text-link);">⭐ GitHub</a>
+        <span style="margin:0 6px;color:var(--text-tertiary);">·</span>
+        <a href="https://www.linkedin.com/in/semeniaka-vitaly-9b895b70/" target="_blank" rel="noopener" style="color:var(--text-link);">🔗 LinkedIn</a>
+        <span style="background:#0a66c2;color:#fff;font-size:10px;padding:2px 7px;border-radius:3px;font-weight:700;margin-left:8px;vertical-align:middle;">#OpenToWork</span>
+      </p>
+      <details style="margin-top:12px;font-size:12px;color:var(--text-tertiary);max-width:520px;margin-left:auto;margin-right:auto;text-align:left;">
+        <summary style="cursor:pointer;font-weight:600;color:var(--text-secondary);">🚀 Как запустить viewer (1 строка)</summary>
+        <pre style="margin-top:8px;font-size:11px;line-height:1.8;background:var(--bg-code);padding:10px 14px;border-radius:6px;overflow-x:auto;"><code>python3 -m http.server 8080                   # Python
+npx serve . -p 8080                            # Node.js
+npx http-server -p 8080                        # Node.js (alt)
+php -S localhost:8080                          # PHP
+ruby -run -e httpd . -p 8080                   # Ruby
+deno run -A jsr:@std/http/file-server          # Deno
+dotnet tool install --global dotnet-serve ; dotnet serve --port 8080  # .NET
+caddy file-server --listen :8080               # Caddy</code></pre>
+      </details>
+      <div class="stats">
+        <div class="stat"><div class="stat-num">43</div><div class="stat-label">Раздел</div></div>
+        <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Статей</div></div>
+        <div class="stat"><div class="stat-num">4</div><div class="stat-label">Группы</div></div>
+      </div>
+    </div>
+  `;
+  document.getElementById('content').scrollTop = 0;
+
+  // Collapse all groups
+  sidebarNav.querySelectorAll('.nav-group').forEach(g => g.classList.add('collapsed'));
+}
+
+function goHome() {
+  showWelcomeScreen();
+  history.pushState(null, '', window.location.pathname);
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', (e) => {
+  if (e.state && e.state.path) {
+    // Restore article from history state
+    const navLink = sidebarNav.querySelector(`.nav-article[data-path="${CSS.escape(e.state.path)}"]`);
+    loadArticle(e.state.path, e.state.sectionTitle, e.state.articleTitle, navLink, false);
+  } else {
+    // No state — go home
+    showWelcomeScreen();
+  }
+});
+
+// ============================================================
+// Initialization
+// ============================================================
+function init() {
+  buildNavigation();
+
+  // Restore preferences
+  applySystemTheme();
+  setReadColor(getSavedReadColor());
+  setReadFont(getSavedReadFont());
+  setFontSize(getSavedFontSize());
+
+  // Collapse all groups by default
+  sidebarNav.querySelectorAll('.nav-group').forEach(g => g.classList.add('collapsed'));
+
+  // Priority 1: Restore from URL hash (shared link or bookmark)
+  const hash = window.location.hash.slice(1); // remove '#'
+  if (hash) {
+    const navLink = sidebarNav.querySelector(`.nav-article[data-path="${CSS.escape(hash)}"]`);
+    if (navLink) {
+      const sectionTitle = navLink.dataset.sectionTitle || '';
+      const articleTitle = navLink.dataset.title || hash;
+      // Replace initial state so back button goes home
+      history.replaceState({ path: hash, sectionTitle, articleTitle }, '', '#' + hash);
+      loadArticle(hash, sectionTitle, articleTitle, navLink, false);
+      return;
+    }
+  }
+
+  // Priority 2: Restore last article from localStorage
+  const restored = restoreLastArticle();
+
+  // Priority 3: Show welcome screen
+  if (!restored) {
+    showWelcomeScreen();
+  }
+
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    if (isDesktop() && isMobileOpen) {
+      // Switched to desktop: close mobile overlay, keep sidebar visible
+      closeSidebar();
+      sidebar.classList.remove('collapsed');
+    }
+  });
+}
+
+// Start when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+
+<!--
+  ============================================================
+  License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+  https://creativecommons.org/licenses/by/4.0/
+
+  You are free to:
+    Share — copy and redistribute the material in any medium or format
+    Adapt — remix, transform, and build upon the material for any purpose
+
+  Under the following terms:
+    Attribution — You must give appropriate credit, provide a link to
+    the license, and indicate if changes were made.
+
+  © 2026 Vitali Semianiaka. Created in 4 hours, LLM cost < $2.
+  ============================================================
+-->
+</body>
+</html>
