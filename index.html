@@ -578,6 +578,18 @@ a:hover { color: var(--text-link-hover); }
   transition: color var(--transition-speed), font-size var(--transition-speed);
 }
 
+/* ---- Content Footer ---- */
+.content-footer {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  font-style: italic;
+}
+
 /* ---- Welcome Screen ---- */
 .welcome {
   display: flex;
@@ -1082,6 +1094,7 @@ caddy file-server --listen :8080               # Caddy</code></pre>
       </div>
     </div>
   </div>
+  <footer class="content-footer">⚠️ Материалы созданы с помощью LLM и могут содержать неточности. Рекомендуется перепроверять достоверность по официальным источникам.</footer>
 </main>
 
 <script>

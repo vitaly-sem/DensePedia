@@ -641,3 +641,7 @@ deno run -A jsr:@std/http/file-server          # Deno
 dotnet tool install --global dotnet-serve ; dotnet serve --port 8080  # .NET
 caddy file-server --listen :8080               # Caddy
 ```
+
+---
+
+> ⚠️ **Дисклеймер:** Материалы созданы с помощью LLM и могут содержать неточности. Рекомендуется перепроверять достоверность по официальным источникам.
