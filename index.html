@@ -589,6 +589,15 @@ a:hover { color: var(--text-link-hover); }
   padding: 40px;
 }
 
+.welcome .hero-image {
+  max-width: 700px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-md);
+}
+
 .welcome h2 {
   font-size: 28px;
   margin-bottom: 12px;
@@ -970,7 +979,7 @@ a:hover { color: var(--text-link-hover); }
     </div>
     <div class="sidebar-footer-line">
       <span style="background:#0a66c2;color:#fff;font-size:9px;padding:2px 6px;border-radius:3px;font-weight:700;" title="Открыт к предложениям">#OpenToWork</span>
-      <span style="font-size:10px" title="Создано за 4 часа, затраты на LLM < $2">⚡ 4h · <$2</span>
+      <span style="font-size:10px" title="Создано за 6 часов, затраты на LLM < $3">⚡ 6h · <$3</span>
     </div>
   </div>
 </aside>
@@ -1041,11 +1050,12 @@ a:hover { color: var(--text-link-hover); }
     <div class="content-inner markdown-body" id="contentInner">
       <!-- Welcome screen by default -->
       <div class="welcome" id="welcomeScreen">
+        <img class="hero-image" src="promo_slide.png" alt="DensePedia — онлайн мини-энциклопедия" loading="eager">
         <h2>📚 Добро пожаловать в DensePedia</h2>
         <p>Сборник статей для подготовки к техническим интервью и расширения кругозора Senior-инженера.</p>
         <p>Выберите раздел и статью в боковой панели, чтобы начать чтение.</p>
         <p style="font-size:13px;color:var(--text-tertiary);margin-top:12px;font-style:italic;">
-          Автор: <strong>Vitali Semianiaka</strong> — проект создан за <strong>4 часа</strong>, затраты на LLM <strong>< $2</strong>
+          Автор: <strong>Vitali Semianiaka</strong> — проект создан за <strong>6 часов</strong>, затраты на LLM <strong>< $3</strong>
         </p>
         <p style="font-size:13px;margin-top:6px;">
           <a href="https://github.com/vitaly-sem/DensePedia" target="_blank" rel="noopener" style="color:var(--text-link);">⭐ GitHub</a>
@@ -1843,11 +1853,12 @@ function showWelcomeScreen() {
   sidebarNav.querySelectorAll('.nav-article').forEach(a => a.classList.remove('active'));
   contentInner.innerHTML = `
     <div class="welcome" id="welcomeScreen">
+      <img class="hero-image" src="promo_slide.png" alt="DensePedia — онлайн мини-энциклопедия" loading="eager">
       <h2>📚 Добро пожаловать в DensePedia</h2>
       <p>Сборник статей для подготовки к техническим интервью и расширения кругозора Senior-инженера.</p>
       <p>Выберите раздел и статью в боковой панели, чтобы начать чтение.</p>
       <p style="font-size:13px;color:var(--text-tertiary);margin-top:12px;font-style:italic;">
-        Автор: <strong>Vitali Semianiaka</strong> — проект создан за <strong>4 часа</strong>, затраты на LLM <strong>< $2</strong>
+        Автор: <strong>Vitali Semianiaka</strong> — проект создан за <strong>6 часов</strong>, затраты на LLM <strong>< $3</strong>
       </p>
       <p style="font-size:13px;margin-top:6px;">
         <a href="https://github.com/vitaly-sem/DensePedia" target="_blank" rel="noopener" style="color:var(--text-link);">⭐ GitHub</a>
@@ -1964,7 +1975,7 @@ if (document.readyState === 'loading') {
     Attribution — You must give appropriate credit, provide a link to
     the license, and indicate if changes were made.
 
-  © 2026 Vitali Semianiaka. Created in 4 hours, LLM cost < $2.
+  © 2026 Vitali Semianiaka. Created in 6 hours, LLM cost < $3.
   ============================================================
 -->
 </body>

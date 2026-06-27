@@ -1,5 +1,7 @@
 # DensePedia — База знаний Senior-инженера
 
+![DensePedia](promo_slide.png)
+
 > **Привет, коллега! 👋**
 >
 > Ты держишь в руках (ну, или открыл в браузере) **DensePedia** —
