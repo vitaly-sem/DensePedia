@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DensePedia — База знаний Senior-инженера</title>
-<meta name="description" content="DensePedia — сборник статей для подготовки к техническим интервью и расширения кругозора. 41 раздел, 200+ статей.">
+<meta name="description" content="DensePedia — сборник статей для подготовки к техническим интервью и расширения кругозора. 42 раздела, 200+ статей.">
 <meta name="color-scheme" content="light dark">
 
 <!-- CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/ -->
@@ -968,7 +968,7 @@ a:hover { color: var(--text-link-hover); }
      ============================================================ -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <h1 style="cursor:pointer" onclick="goHome()" title="На главную">📚 DensePedia</h1>
+    <h1 style="cursor:pointer" onclick="goHome()" title="На главную">📚 DensePedia <span class="version" style="font-size:0.55em;font-weight:400;color:var(--text-tertiary);vertical-align:super;margin-left:2px;">v1.1</span></h1>
     <div class="subtitle">База знаний Senior-инженера</div>
   </div>
 
@@ -1003,7 +1003,7 @@ a:hover { color: var(--text-link-hover); }
   <div class="topbar">
     <div class="topbar-left">
       <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Меню">☰</button>
-      <span class="breadcrumb" id="breadcrumb" style="cursor:pointer" onclick="goHome()" title="На главную">🏠 DensePedia</span>
+      <span class="breadcrumb" id="breadcrumb" style="cursor:pointer" onclick="goHome()" title="На главную">🏠 DensePedia <span style="font-size:0.7em;font-weight:400;color:var(--text-tertiary);">v1.1</span></span>
     </div>
 
     <div class="topbar-right">
@@ -1064,7 +1064,7 @@ a:hover { color: var(--text-link-hover); }
       <div class="welcome" id="welcomeScreen">
         <img class="hero-image" src="promo_slide.png" alt="DensePedia — онлайн мини-энциклопедия" loading="eager">
         <h2>📚 Добро пожаловать в DensePedia</h2>
-        <p>Сборник статей для подготовки к техническим интервью и расширения кругозора Senior-инженера.</p>
+        <p>Структурированная база знаний Senior-инженера: 40+ разделов, 200+ статей с фактами, примерами кода и чек-листами — от безопасности и архитектуры до фреймворков и системного дизайна.</p>
         <p>Выберите раздел и статью в боковой панели, чтобы начать чтение.</p>
         <p style="font-size:13px;color:var(--text-tertiary);margin-top:12px;font-style:italic;">
           Автор: <strong>Vitali Semianiaka</strong> — проект создан за <strong>6 часов</strong>, затраты на LLM <strong>< $3</strong>
@@ -1286,6 +1286,14 @@ const NAV_TREE = [
         { num: 1, title: "Коммуникация и фасилитация", file: "01-communication-facilitation.md" },
         { num: 2, title: "Менторство и развитие команды", file: "02-mentoring-team-development.md" },
         { num: 3, title: "Принятие решений и конфликты", file: "03-decision-conflicts.md" }
+      ]},
+      { id: "108", title: "Microsoft Dynamics 365", dir: "108-dynamics365", articles: [
+        { num: 1, title: "Обзор экосистемы Dynamics 365", file: "01-dynamics365-overview.md" },
+        { num: 2, title: "Finance & Operations — глубокое погружение", file: "02-finance-operations.md" },
+        { num: 3, title: "Техническая архитектура и разработка", file: "03-technical-architecture.md" },
+        { num: 4, title: "Business Central — ERP для SMB", file: "04-business-central.md" },
+        { num: 5, title: "Power Platform и интеграция", file: "05-power-platform-integration.md" },
+        { num: 6, title: "Управление данными и миграция", file: "06-data-management-migration.md" }
       ]}
     ]
   },
@@ -1667,7 +1675,7 @@ async function loadArticle(path, sectionTitle, articleTitle, linkEl, pushHistory
         </p>
       </div>
     `;
-    breadcrumb.textContent = '🏠 DensePedia';
+    breadcrumb.textContent = '🏠 DensePedia v1.1';
   }
 
   // Close mobile sidebar after article selection
@@ -1862,13 +1870,13 @@ document.addEventListener('keydown', (e) => {
 // ============================================================
 function showWelcomeScreen() {
   currentArticlePath = null;
-  breadcrumb.textContent = '🏠 DensePedia';
+  breadcrumb.textContent = '🏠 DensePedia v1.1';
   sidebarNav.querySelectorAll('.nav-article').forEach(a => a.classList.remove('active'));
   contentInner.innerHTML = `
     <div class="welcome" id="welcomeScreen">
       <img class="hero-image" src="promo_slide.png" alt="DensePedia — онлайн мини-энциклопедия" loading="eager">
       <h2>📚 Добро пожаловать в DensePedia</h2>
-      <p>Сборник статей для подготовки к техническим интервью и расширения кругозора Senior-инженера.</p>
+      <p>Структурированная база знаний Senior-инженера: 40+ разделов, 200+ статей с фактами, примерами кода и чек-листами — от безопасности и архитектуры до фреймворков и системного дизайна.</p>
       <p>Выберите раздел и статью в боковой панели, чтобы начать чтение.</p>
       <p style="font-size:13px;color:var(--text-tertiary);margin-top:12px;font-style:italic;">
         Автор: <strong>Vitali Semianiaka</strong> — проект создан за <strong>6 часов</strong>, затраты на LLM <strong>< $3</strong>
