@@ -54,7 +54,7 @@
 |---|---|---|
 | **Публичные (государственные)** | Финансируются из бюджета, ниже tuition | Европа (Германия, Франция, Россия), Калифорнийский университет |
 | **Частные** | Финансируются tuition + endowments | США (Harvard, Stanford, MIT), Япония (Waseda, Keio) |
-| **Non-profit vs For-profit** | Большинство — non-profit; for-profit (Phoenix, Strayer) —争议 |
+| **Non-profit vs For-profit** | Большинство — non-profit; for-profit (Phoenix, Strayer) — спорны |
 
 **Факт:** Endowment (целевой капитал) Harvard — ~$50 млрд, что больше ВВП многих стран.
 
